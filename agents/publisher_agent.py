@@ -7,6 +7,9 @@ from pydantic import BaseModel
 
 from .base_agent import BaseAgent
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class PublisherOutput(BaseModel):
     title: str
@@ -39,9 +42,27 @@ class PublisherAgent(BaseAgent):
 
     async def respond(self, history: str) -> str:
         data = await self._extract_structured(history)
-        title = data.title
-        content = data.content
-        image_path = data.image_path
+
+        # # Use model_dump() for Pydantic v2+ compatibility
+        # if hasattr(data, "model_dump"):
+        #     parsed = data.model_dump()
+        # else:
+        #     parsed = dict(data)
+
+        # parsed = data.value[0].items[0].text.strip()
+        logger.info(f"Extracted data: {data}")
+
+        import ast
+        parsed = ast.literal_eval(str(data))
+
+        title = parsed.get("title")
+        content = parsed.get("content")
+        image_path = parsed.get("image_path")
+
+        logger.info(f"Parsed data: {parsed}")
+        logger.info(f"Title: {title}")
+        logger.info(f"Content: {content}")
+        logger.info(f"Image path: {image_path}")
 
         if not title or not content:
             return "Cannot generate PDF: title or content missing."
