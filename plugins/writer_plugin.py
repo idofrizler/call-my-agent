@@ -3,7 +3,7 @@
 from semantic_kernel.functions import KernelFunction, KernelPlugin
 
 CONTENT_PROMPT = """
-You are a book writer. Continue the story or write a new section based on the previous context.
+You are a book writer. Write a story based on the provided context.
 Context:
 {{$history}}
 ---

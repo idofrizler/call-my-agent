@@ -34,12 +34,6 @@ def create_image(prompt: str, cfg: Config, out_dir: str = "images") -> str:
             azure_endpoint=cfg.endpoint
         )
         
-        logger.info(f"Generating image with prompt: {prompt}")
-        logger.info(f"Using Azure OpenAI endpoint: {cfg.endpoint}")
-        logger.info(f"Using Azure OpenAI deployment: {cfg.image_deployment}")
-        logger.info(f"Using Azure OpenAI API version: {cfg.image_api_version}")
-
-
         # Generate image
         response = client.images.generate(
             model=cfg.image_deployment,
@@ -49,8 +43,6 @@ def create_image(prompt: str, cfg: Config, out_dir: str = "images") -> str:
             quality="standard",
         )
         
-        logger.info(f"Image generation response: {response}")
-
         # Download image
         image_url = response.data[0].url
         image_resp = requests.get(image_url)

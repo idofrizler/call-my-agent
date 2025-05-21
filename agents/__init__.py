@@ -5,5 +5,6 @@ from .writer_agent import WriterAgent
 from .editor_agent import EditorAgent
 from .selector_agent import SelectorAgent
 from .illustrator_agent import IllustratorAgent
+from .publisher_agent import PublisherAgent
 
-__all__ = ["BaseAgent", "WriterAgent", "EditorAgent", "SelectorAgent", "IllustratorAgent"]
+__all__ = ["BaseAgent", "WriterAgent", "EditorAgent", "SelectorAgent", "IllustratorAgent", "PublisherAgent"]

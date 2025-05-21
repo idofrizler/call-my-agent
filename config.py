@@ -46,5 +46,5 @@ class Config:
             model=os.getenv("AZURE_OPENAI_MODEL"),
             api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
             image_api_version=os.getenv("AZURE_OPENAI_IMAGE_API_VERSION"),
-            max_turns=int(os.getenv("MAX_TURNS", "10")),
+            max_turns=int(os.getenv("MAX_TURNS", "20")),
         )

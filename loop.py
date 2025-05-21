@@ -1,6 +1,6 @@
 """Main orchestration loop for the story creation process."""
 
-from agents import WriterAgent, EditorAgent, SelectorAgent, IllustratorAgent
+from agents import WriterAgent, EditorAgent, SelectorAgent, IllustratorAgent, PublisherAgent
 
 class RunLoop:
     """Orchestrates the interaction between writer and editor agents."""
@@ -11,6 +11,7 @@ class RunLoop:
         editor: EditorAgent,
         selector: SelectorAgent,
         illustrator: IllustratorAgent,
+        publisher: PublisherAgent,
         seed: str,
         max_turns: int
     ):
@@ -21,6 +22,7 @@ class RunLoop:
             editor: Agent that reviews content
             selector: Agent that chooses next responder
             illustrator: Agent that generates image descriptions
+            publisher: Agent that creates PDF layout
             seed: Initial book idea
             max_turns: Maximum number of turns before stopping
         """
@@ -28,6 +30,7 @@ class RunLoop:
         self.editor = editor
         self.selector = selector
         self.illustrator = illustrator
+        self.publisher = publisher
         self.seed = seed
         self.max_turns = max_turns
         # Track whether an illustration has already been generated
@@ -68,7 +71,10 @@ class RunLoop:
             # Check if editor thinks we're done
             if agent_name == "Editor" and self.editor.is_ready(output):
                 if self.has_image:
-                    print("\n✅ Editor approved. Book is done!")
+                    print("\n✅ Editor approved. Creating PDF...")
+                    response = await self.publisher.respond(history)
+                    print(response)
+                    print("\n✅ Book is done!")
                     break
                 else:
                     print("\n❌ Editor attempted to approve but no illustration exists yet.")

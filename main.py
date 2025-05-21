@@ -13,14 +13,15 @@ def main():
     # Initialize kernel and plugins
     kernel = kernel_factory.build_kernel(cfg)
 
-    from plugins import writer_plugin, editor_plugin, selector_plugin, illustrator_plugin
+    from plugins import writer_plugin, editor_plugin, selector_plugin, illustrator_plugin, publisher_plugin
     
     pl_writer = writer_plugin.build_writer_plugin()
     pl_editor = editor_plugin.build_editor_plugin()
     pl_selector = selector_plugin.build_selector_plugin()
     pl_illustrator = illustrator_plugin.build_illustrator_plugin()
+    pl_publisher = publisher_plugin.build_publisher_plugin()
     
-    for p in (pl_writer, pl_editor, pl_selector, pl_illustrator):
+    for p in (pl_writer, pl_editor, pl_selector, pl_illustrator, pl_publisher):
         kernel.plugins[p.name] = p
 
     # Create agents
@@ -28,6 +29,7 @@ def main():
     agent_editor = agents.EditorAgent(kernel)
     agent_selector = agents.SelectorAgent(kernel)
     agent_illustrator = agents.IllustratorAgent(kernel, cfg)
+    agent_publisher = agents.PublisherAgent(kernel)
 
     # Load seed and create run loop
     seed = seed_loader.load_seed()
@@ -36,6 +38,7 @@ def main():
         editor=agent_editor,
         selector=agent_selector,
         illustrator=agent_illustrator,
+        publisher=agent_publisher,
         seed=seed,
         max_turns=cfg.max_turns
     )
