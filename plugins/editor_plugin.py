@@ -1,10 +1,17 @@
-"""Editor plugin for reviewing story content."""
+"""Editor plugin for reviewing story content and ensuring titles exist."""
 
 from semantic_kernel.functions import KernelFunction, KernelPlugin
 
 EDITOR_PROMPT = """
 You are a book editor. Review the latest book section and give your opinion.
-If you think the book is ready to publish, say exactly: "The book is ready."
+Before approving, verify that:
+1. Each chapter/section has a title
+2. The overall book has a title
+3. The content is complete and polished
+
+If ANY title is missing, mention it specifically and request it.
+If all titles exist and content is ready, say exactly: "The book is ready."
+
 Context:
 {{$history}}
 ---
