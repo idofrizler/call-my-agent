@@ -2,6 +2,7 @@
 
 import io
 import textwrap
+import json
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.lib.utils import ImageReader
@@ -62,8 +63,24 @@ def build_publisher_plugin() -> KernelPlugin:
     """
     pub_fn = KernelFunction.from_method(
         plugin_name="PublisherPlugin",
-        # function_name="Publish",
-        # description="Return printable PDF bytes from title/content/image",
         method=_render_pdf,
     )
-    return KernelPlugin(name="PublisherPlugin", functions=[pub_fn])
+    extract_fn = KernelFunction.from_prompt(
+        plugin_name="PublisherPlugin",
+        function_name="extract_structured",
+        prompt="""
+Extract the following fields from the conversation history as JSON: title, content, image_path.
+If a field is missing, set its value to an empty string.
+Respond ONLY with a JSON object in this format:
+{
+  'title': '...',
+  'content': '...',
+  'image_path': '...'
+}
+Do not include any explanation or extra text.
+
+History:
+{{$input}}
+"""
+    )
+    return KernelPlugin(name="PublisherPlugin", functions=[pub_fn, extract_fn])

@@ -3,8 +3,15 @@
 from pathlib import Path
 from semantic_kernel import Kernel
 from semantic_kernel.functions.kernel_arguments import KernelArguments
+from pydantic import BaseModel
 
 from .base_agent import BaseAgent
+
+
+class PublisherOutput(BaseModel):
+    title: str
+    content: str
+    image_path: str = ""
 
 
 class PublisherAgent(BaseAgent):
@@ -21,10 +28,20 @@ class PublisherAgent(BaseAgent):
         self.out_dir = Path(output_dir)
         self.out_dir.mkdir(exist_ok=True)
 
+    async def _extract_structured(self, history: str) -> PublisherOutput:
+        """Use plugin function to extract title, content, and image_path as structured JSON from history, validated by PublisherOutput."""
+        result = await self.kernel.invoke(
+            self.kernel.plugins["PublisherPlugin"].functions["extract_structured"],
+            KernelArguments(input=history),
+            output_type=PublisherOutput
+        )
+        return result
+
     async def respond(self, history: str) -> str:
-        title = self._extract("title:", history)
-        content = self._extract("content:", history)
-        image_path = self._extract("image:", history)
+        data = await self._extract_structured(history)
+        title = data.title
+        content = data.content
+        image_path = data.image_path
 
         if not title or not content:
             return "Cannot generate PDF: title or content missing."
@@ -41,22 +58,3 @@ class PublisherAgent(BaseAgent):
         pdf_path = self.out_dir / "book.pdf"
         pdf_path.write_bytes(pdf_bytes.value)
         return f"PDF saved to {pdf_path}"
-
-
-    @staticmethod
-    def _extract(key: str, text: str) -> str:
-        """Extract the value following a key from text.
-        
-        Searches backwards through lines to find most recent occurrence.
-        
-        Args:
-            key: Key to search for (e.g. "title:")
-            text: Text to search in
-            
-        Returns:
-            Extracted value or empty string if not found
-        """
-        for line in reversed(text.splitlines()):
-            if line.lower().startswith(key):
-                return line[len(key):].strip()
-        return ""
