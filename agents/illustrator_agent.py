@@ -3,7 +3,7 @@
 from semantic_kernel import Kernel
 
 from config import Config
-from image_generator import create_image
+from utils.image_generator import create_image
 from .base_agent import BaseAgent
 
 class IllustratorAgent(BaseAgent):

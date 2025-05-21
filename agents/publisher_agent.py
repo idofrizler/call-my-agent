@@ -5,6 +5,7 @@ from semantic_kernel import Kernel
 from semantic_kernel.functions.kernel_arguments import KernelArguments
 from pydantic import BaseModel
 
+from utils.pdf_generation import render_pdf
 from .base_agent import BaseAgent
 
 import logging
@@ -71,11 +72,12 @@ class PublisherAgent(BaseAgent):
         if image_path:
             args["image_path"] = image_path
 
-        pdf_bytes = await self.kernel.invoke(
-            self.kernel.plugins["PublisherPlugin"].functions["_render_pdf"],
-            KernelArguments(args)
+        pdf_bytes = render_pdf(
+            title=title,
+            content=content,
+            image_path=image_path or None
         )
 
         pdf_path = self.out_dir / "book.pdf"
-        pdf_path.write_bytes(pdf_bytes.value)
+        pdf_path.write_bytes(pdf_bytes)
         return f"PDF saved to {pdf_path}"
