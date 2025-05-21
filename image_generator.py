@@ -9,6 +9,7 @@ import requests
 from openai import AzureOpenAI
 from config import Config
 
+
 logger = logging.getLogger(__name__)
 
 def create_image(prompt: str, cfg: Config, out_dir: str = "images") -> str:
@@ -29,18 +30,27 @@ def create_image(prompt: str, cfg: Config, out_dir: str = "images") -> str:
         # Initialize Azure client
         client = AzureOpenAI(
             api_key=cfg.api_key,
-            api_version=cfg.api_version,
+            api_version=cfg.image_api_version,
             azure_endpoint=cfg.endpoint
         )
         
+        logger.info(f"Generating image with prompt: {prompt}")
+        logger.info(f"Using Azure OpenAI endpoint: {cfg.endpoint}")
+        logger.info(f"Using Azure OpenAI deployment: {cfg.image_deployment}")
+        logger.info(f"Using Azure OpenAI API version: {cfg.image_api_version}")
+
+
         # Generate image
         response = client.images.generate(
+            model=cfg.image_deployment,
             prompt=prompt,
             n=1,
-            size="1024x1024",
-            model=cfg.deployment  # Use Azure deployment
+            style="vivid",
+            quality="standard",
         )
         
+        logger.info(f"Image generation response: {response}")
+
         # Download image
         image_url = response.data[0].url
         image_resp = requests.get(image_url)
@@ -56,5 +66,6 @@ def create_image(prompt: str, cfg: Config, out_dir: str = "images") -> str:
         return str(image_path)
         
     except Exception as e:
-        logger.error(f"Failed to generate/save image: {str(e)}")
+        error_msg = str(e)
+        logger.error(f"Failed to generate/save image: {error_msg}")
         return None

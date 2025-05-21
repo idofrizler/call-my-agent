@@ -30,6 +30,8 @@ class RunLoop:
         self.illustrator = illustrator
         self.seed = seed
         self.max_turns = max_turns
+        # Track whether an illustration has already been generated
+        self.has_image = False
 
     async def run(self) -> None:
         """Execute the story creation loop.
@@ -59,7 +61,14 @@ class RunLoop:
             history += f"\n[{agent_name}]: {output}"
             print(f"[{agent_name}]: {output}")
 
+            # Update illustration flag if the current response contains an image
+            if "![Generated illustration]" in output:
+                self.has_image = True
+
             # Check if editor thinks we're done
             if agent_name == "Editor" and self.editor.is_ready(output):
-                print("\n✅ Editor approved. Book is done!")
-                break
+                if self.has_image:
+                    print("\n✅ Editor approved. Book is done!")
+                    break
+                else:
+                    print("\n❌ Editor attempted to approve but no illustration exists yet.")
