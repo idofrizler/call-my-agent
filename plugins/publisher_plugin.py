@@ -14,15 +14,15 @@ def build_publisher_plugin() -> KernelPlugin:
     plugin_name="PublisherPlugin",
     function_name="extract_structured",
     prompt="""
-Extract the following fields from the conversation history as JSON: title, content, image_path.
-If a field is missing, set its value to an empty string.
+Extract the following fields from the conversation history as JSON: title, content, image_paths.
+If a field is missing, set title/content to empty string, image_paths to empty array.
 Content is not the history, but the content of the book. Only the text itself, not the conversation between the agents.
 
 Respond ONLY with a JSON object using **double quotes**, like this:
 {
   "title": "string",
   "content": "string",
-  "image_path": "string"
+  "image_paths": ["string"]
 }
 
 Do NOT include any explanation or markdown formatting. Just return valid raw JSON.

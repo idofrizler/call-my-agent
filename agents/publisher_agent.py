@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class PublisherOutput(BaseModel):
     title: str
     content: str
-    image_path: str = ""
+    image_paths: list[str] = []
 
 
 class PublisherAgent(BaseAgent):
@@ -58,24 +58,23 @@ class PublisherAgent(BaseAgent):
 
         title = parsed.get("title")
         content = parsed.get("content")
-        image_path = parsed.get("image_path")
+        # Handle both new image_paths and legacy image_path
+        image_paths = parsed.get("image_paths", [])
+        if not image_paths and parsed.get("image_path"):
+            image_paths = [parsed["image_path"]]
 
         logger.info(f"Parsed data: {parsed}")
         logger.info(f"Title: {title}")
         logger.info(f"Content: {content}")
-        logger.info(f"Image path: {image_path}")
+        logger.info(f"Image paths: {image_paths}")
 
         if not title or not content:
             return "Cannot generate PDF: title or content missing."
 
-        args = { "title": title, "content": content }
-        if image_path:
-            args["image_path"] = image_path
-
         pdf_bytes = render_pdf(
             title=title,
             content=content,
-            image_path=image_path or None
+            image_paths=image_paths if image_paths else None
         )
 
         pdf_path = self.out_dir / "book.pdf"

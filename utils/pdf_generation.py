@@ -7,13 +7,13 @@ from reportlab.lib.units import cm
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
-def render_pdf(title: str, content: str, image_path: str|None=None) -> bytes:
-    """Create PDF with title, optional image, and wrapped text content.
+def render_pdf(title: str, content: str, image_paths: list[str]|None=None) -> bytes:
+    """Create PDF with title, optional images, and wrapped text content.
     
     Args:
         title: Book/chapter title
         content: Main text content
-        image_path: Optional path to illustration image
+        image_paths: Optional list of paths to illustration images
         
     Returns:
         PDF file contents as bytes
@@ -28,15 +28,16 @@ def render_pdf(title: str, content: str, image_path: str|None=None) -> bytes:
     c.drawCentredString(w/2, h-margin, title)
     y = h - margin - 2*cm
 
-    # Illustration (if provided)
-    if image_path:
-        img = ImageReader(image_path)
-        img_w, img_h = img.getSize()
-        scale = (w-2*margin) / img_w
-        img_h_scaled = img_h * scale
-        c.drawImage(img, margin, y-img_h_scaled, width=w-2*margin, height=img_h_scaled, 
-                   preserveAspectRatio=True, anchor="n")
-        y -= img_h_scaled + 1*cm
+    # Illustrations (if provided)
+    if image_paths:
+        for image_path in image_paths:
+            img = ImageReader(image_path)
+            img_w, img_h = img.getSize()
+            scale = (w-2*margin) / img_w
+            img_h_scaled = img_h * scale
+            c.drawImage(img, margin, y-img_h_scaled, width=w-2*margin, height=img_h_scaled, 
+                       preserveAspectRatio=True, anchor="n")
+            y -= img_h_scaled + 1*cm
 
     # Body text with simple wrapping
     c.setFont("Times-Roman", 12)
