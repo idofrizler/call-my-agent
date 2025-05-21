@@ -16,7 +16,7 @@ class Config:
     model: str
     api_version: str
     max_turns: int = 20
-
+    
     @classmethod
     def from_env(cls) -> "Config":
         """Load configuration from environment variables."""
@@ -25,9 +25,9 @@ class Config:
         required = {
             "api_key": "AZURE_OPENAI_API_KEY",
             "endpoint": "AZURE_OPENAI_ENDPOINT", 
-            "deployment": "AZURE_OPENAI_DEPLOYMENT",
+            "deployment": "AZURE_OPENAI_DEPLOYMENT",  # This should be your DALL-E deployment name
             "model": "AZURE_OPENAI_MODEL",
-            "api_version": "AZURE_OPENAI_API_VERSION",
+            "api_version": "AZURE_OPENAI_API_VERSION",  # Should be recent enough for DALL-E (e.g. 2024-02-15-preview)
         }
 
         missing = [env for env in required.values() if not os.getenv(env)]

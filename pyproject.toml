@@ -1,14 +1,12 @@
 [project]
 name = "call-my-agent"
 version = "0.1.0"
-description = "Writer + Editor loop using Semantic Kernel with Azure OpenAI"
+description = "An AI writer's room built with Python and Azure Semantic Kernel"
+readme = "README.md"
+
 dependencies = [
+    "semantic-kernel",
     "python-dotenv",
-    "semantic-kernel"
+    "openai",
+    "requests",
 ]
-
-[project.scripts]
-call-my-agent = "main:main"
-
-[tool.uv]
-python = ">=3.13"

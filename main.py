@@ -1,6 +1,7 @@
 """Entry point for the story creation application."""
 
 import asyncio
+import os
 
 import config, kernel_factory, plugins, agents, loop, seed_loader
 
@@ -26,7 +27,7 @@ def main():
     agent_writer = agents.WriterAgent(kernel)
     agent_editor = agents.EditorAgent(kernel)
     agent_selector = agents.SelectorAgent(kernel)
-    agent_illustrator = agents.IllustratorAgent(kernel)
+    agent_illustrator = agents.IllustratorAgent(kernel, cfg)
 
     # Load seed and create run loop
     seed = seed_loader.load_seed()
