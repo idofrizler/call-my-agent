@@ -3,8 +3,8 @@
 from semantic_kernel.functions import KernelFunction, KernelPlugin
 
 SELECTOR_PROMPT = """
-Given the chat history, decide who should go next: 'Writer' or 'Editor'.
-Only respond with 'Writer' or 'Editor'.
+Given the chat history, decide who should go next: 'Writer', 'Editor', or 'Illustrator'.
+Only respond with one of those exact words.
 Chat history:
 {{$history}}
 ---

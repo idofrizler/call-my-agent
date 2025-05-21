@@ -28,7 +28,7 @@ class SelectorAgent(BaseAgent):
         
         # Validate and normalize response
         agent = response.strip()
-        if agent not in ["Writer", "Editor"]:
+        if agent not in ["Writer", "Editor", "Illustrator"]:
             return "Writer"  # Default to writer if invalid response
             
         return agent

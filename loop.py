@@ -1,6 +1,6 @@
 """Main orchestration loop for the story creation process."""
 
-from agents import WriterAgent, EditorAgent, SelectorAgent
+from agents import WriterAgent, EditorAgent, SelectorAgent, IllustratorAgent
 
 class RunLoop:
     """Orchestrates the interaction between writer and editor agents."""
@@ -10,6 +10,7 @@ class RunLoop:
         writer: WriterAgent,
         editor: EditorAgent,
         selector: SelectorAgent,
+        illustrator: IllustratorAgent,
         seed: str,
         max_turns: int
     ):
@@ -19,12 +20,14 @@ class RunLoop:
             writer: Agent that writes story content
             editor: Agent that reviews content
             selector: Agent that chooses next responder
+            illustrator: Agent that generates image descriptions
             seed: Initial book idea
             max_turns: Maximum number of turns before stopping
         """
         self.writer = writer
         self.editor = editor
         self.selector = selector
+        self.illustrator = illustrator
         self.seed = seed
         self.max_turns = max_turns
 
@@ -40,7 +43,12 @@ class RunLoop:
         for turn in range(self.max_turns):
             # Decide who goes next
             agent_name = await self.selector.next(history)
-            agent = self.writer if agent_name == "Writer" else self.editor
+            if agent_name == "Writer":
+                agent = self.writer
+            elif agent_name == "Editor":
+                agent = self.editor
+            else:
+                agent = self.illustrator
             
             print(f"\n🔁 [{agent_name}] is now responding...\n")
 
