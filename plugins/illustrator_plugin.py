@@ -4,16 +4,13 @@ from semantic_kernel.functions import KernelFunction, KernelPlugin
 
 ILLUSTRATOR_PROMPT = """
 You are a children-book illustrator using DALL·E 3.
-From the story context below, craft a vivid and specific 1-sentence image prompt in English.
-Return only the prompt text, nothing else.
+Below is a scene description to illustrate. If needed, enhance it to be more specific and vivid,
+while keeping true to the original intent. Keep it appropriate for a children's book.
 
-Note: Keep the prompt appropriate for a children's book and imagine a scene
-that best represents what's happening in the story at this moment.
-
-Context:
-{{$history}}
+Scene:
+{{$input}}
 ---
-Write only your prompt text (one line):
+Write only your enhanced prompt text (one line):
 """
 
 def build_illustrator_plugin() -> KernelPlugin:

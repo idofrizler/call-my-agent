@@ -68,13 +68,30 @@ class RunLoop:
             if "![Generated illustration]" in output:
                 self.has_image = True
 
-            # Check if editor thinks we're done
-            if agent_name == "Editor" and self.editor.is_ready(output):
-                if self.has_image:
+            # Handle any requested illustrations after editor response
+            if agent_name == "Editor":
+                while self.editor.image_queue:
+                    prompt = self.editor.image_queue[0]  # Peek next prompt
+                    print(f"\n🎨 Generating illustration: {prompt}\n")
+                    
+                    # Get illustration
+                    response = await self.illustrator.respond(prompt)
+                    output = response.strip()
+                    
+                    # Add to history and remove from queue if successful
+                    if "![Generated illustration]" in output:
+                        history += f"\n[Illustrator]: {output}"
+                        print(f"[Illustrator]: {output}")
+                        self.editor.image_queue.pop(0)
+                        self.has_image = True
+                    else:
+                        print("\n❌ Failed to generate illustration, will retry...")
+                        break  # Try again next turn
+                
+                # Check if editor thinks we're done and all images are complete
+                if self.editor.is_ready():
                     print("\n✅ Editor approved. Creating PDF...")
                     response = await self.publisher.respond(history)
                     print(response)
                     print("\n✅ Book is done!")
                     break
-                else:
-                    print("\n❌ Editor attempted to approve but no illustration exists yet.")

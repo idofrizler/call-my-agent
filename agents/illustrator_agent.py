@@ -19,21 +19,19 @@ class IllustratorAgent(BaseAgent):
         super().__init__(kernel, "IllustratorPlugin", "Illustrator")
         self.config = cfg
 
-    async def respond(self, history: str) -> str:
-        """Generate an image based on conversation history.
+    async def respond(self, prompt: str) -> str:
+        """Generate an image based on a prompt.
         
         Args:
-            history: Chat history to process
+            prompt: Image description to visualize
             
         Returns:
             Markdown image reference, or just the prompt if generation fails
         """
-        # Get prompt from base respond
-        prompt = await super().respond(history)
         
         # Generate and save the image
-        image_path = create_image(prompt, self.config)
-        # image_path = "images\\20250521_155035.png"
+        # image_path = create_image(prompt, self.config)
+        image_path = "images\\20250521_155035.png"
         
         if image_path:
             # Return markdown referencing local file

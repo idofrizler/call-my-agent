@@ -77,6 +77,10 @@ class PublisherAgent(BaseAgent):
             image_paths=image_paths if image_paths else None
         )
 
-        pdf_path = self.out_dir / "book.pdf"
+        from datetime import datetime
+
+        # add title and timestamp to filename
+        filename = f"{title.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        pdf_path = self.out_dir / filename
         pdf_path.write_bytes(pdf_bytes)
         return f"PDF saved to {pdf_path}"

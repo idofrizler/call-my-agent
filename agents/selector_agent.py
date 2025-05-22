@@ -26,9 +26,9 @@ class SelectorAgent(BaseAgent):
         """
         response = await self.respond(history)
         
-        # Validate and normalize response
+        # Validate and normalize response - Illustrator is no longer selected
         agent = response.strip()
-        if agent not in ["Writer", "Editor", "Illustrator"]:
+        if agent not in ["Writer", "Editor"]:
             return "Writer"  # Default to writer if invalid response
             
         return agent
