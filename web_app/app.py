@@ -68,5 +68,17 @@ def send_static(path):
     """Serve static files."""
     return send_from_directory('static', path)
 
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    """Serve generated images."""
+    image_dir = Path(__file__).parent.parent / "images"
+    return send_from_directory(image_dir, filename)
+
+@app.route('/output/<path:filename>')
+def serve_output(filename):
+    """Serve generated output files (PDFs etc)."""
+    output_dir = Path(__file__).parent.parent / "output"
+    return send_from_directory(output_dir, filename)
+
 if __name__ == '__main__':
     app.run(debug=True)

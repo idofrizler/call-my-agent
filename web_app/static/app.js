@@ -123,5 +123,33 @@ function escapeHtml(text) {
 // Initial load
 loadConversations();
 
+// Image modal handling
+const imageModal = document.getElementById('imageModal');
+const modalImg = imageModal.querySelector('img');
+
+// Close modal when clicking outside the image
+imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) {
+        imageModal.classList.remove('visible');
+    }
+});
+
+// Add click handlers to images
+function setupImageHandlers() {
+    document.querySelectorAll('.message img').forEach(img => {
+        img.addEventListener('click', () => {
+            modalImg.src = img.src;
+            imageModal.classList.add('visible');
+        });
+    });
+}
+
+// Update the loadConversation function to setup image handlers
+const originalLoadConversation = loadConversation;
+loadConversation = async (sessionId) => {
+    await originalLoadConversation(sessionId);
+    setupImageHandlers();
+};
+
 // Optional: Poll for updates every 5 seconds
 setInterval(loadConversations, 5000);
