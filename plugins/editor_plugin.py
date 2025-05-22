@@ -37,6 +37,7 @@ def build_editor_plugin() -> KernelPlugin:
     editor_fn = KernelFunction.from_prompt(
         plugin_name="EditorPlugin",
         function_name="Editor",
+        description="Reviews the book content and titles, ensuring quality and completeness.",
         prompt=EDITOR_PROMPT
     )
     

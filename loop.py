@@ -1,6 +1,7 @@
 """Main orchestration loop for the story creation process."""
 
 from agents import WriterAgent, EditorAgent, SelectorAgent, IllustratorAgent, PublisherAgent
+from utils.conversation_logger import ConversationLogger
 
 class RunLoop:
     """Orchestrates the interaction between writer and editor agents."""
@@ -13,7 +14,8 @@ class RunLoop:
         illustrator: IllustratorAgent,
         publisher: PublisherAgent,
         seed: str,
-        max_turns: int
+        max_turns: int,
+        logger: ConversationLogger = None
     ):
         """Initialize the run loop.
         
@@ -35,6 +37,7 @@ class RunLoop:
         self.max_turns = max_turns
         # Track whether an illustration has already been generated
         self.has_image = False
+        self.logger = logger or ConversationLogger()
 
     async def run(self) -> None:
         """Execute the story creation loop.
@@ -44,6 +47,8 @@ class RunLoop:
         - The maximum number of turns is reached
         """
         history = f"[User]: {self.seed}"
+        if self.logger:
+            self.logger.append("User", self.seed)
 
         for turn in range(self.max_turns):
             # Decide who goes next
@@ -63,6 +68,8 @@ class RunLoop:
 
             history += f"\n[{agent_name}]: {output}"
             print(f"[{agent_name}]: {output}")
+            if self.logger:
+                self.logger.append(agent_name, output)
 
             # Update illustration flag if the current response contains an image
             if "![Generated illustration]" in output:
@@ -94,4 +101,6 @@ class RunLoop:
                     response = await self.publisher.respond(history)
                     print(response)
                     print("\n✅ Book is done!")
+                    if self.logger:
+                        self.logger.finalize()
                     break

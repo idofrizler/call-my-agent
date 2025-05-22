@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Chat Viewer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <h1>Conversations</h1>
+            <div class="theme-toggle">
+                <label>
+                    <input type="checkbox" id="darkMode"> Dark Mode
+                </label>
+            </div>
+            <div id="conversations" class="conversation-list">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+        <div class="chat">
+            <div id="messages" class="messages">
+                <!-- Populated by JavaScript -->
+                <div class="empty-state">
+                    Select a conversation from the sidebar
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

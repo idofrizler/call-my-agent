@@ -30,8 +30,8 @@ class IllustratorAgent(BaseAgent):
         """
         
         # Generate and save the image
-        image_path = create_image(prompt, self.config)
-        # image_path = "images\\20250521_155035.png"
+        # image_path = create_image(prompt, self.config)
+        image_path = "images\\20250521_155035.png"
         
         if image_path:
             # Return markdown referencing local file

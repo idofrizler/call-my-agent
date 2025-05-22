@@ -8,6 +8,7 @@ dependencies = [
     "semantic-kernel",
     "python-dotenv",
     "openai",
+    "flask",
     "requests",
     "reportlab"
 ]
