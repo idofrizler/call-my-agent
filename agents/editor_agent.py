@@ -41,6 +41,10 @@ class EditorAgent(BaseAgent):
         self.text_ready = False
         
         for line in response.split('\n'):
+
+            # remote leading dashes, asterisk, and spaces
+            line = line.lstrip('-* ')
+
             if line.strip().startswith('IMG:'):
                 # Extract image prompt after IMG: prefix
                 prompt = line.strip()[4:].strip()

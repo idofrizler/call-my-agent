@@ -71,10 +71,13 @@ class PublisherAgent(BaseAgent):
         if not title or not content:
             return "Cannot generate PDF: title or content missing."
 
+        # Convert image paths to image blocks with full width and no captions
+        image_blocks = [{"path": path, "full_width": True} for path in image_paths] if image_paths else None
+        
         pdf_bytes = render_pdf(
             title=title,
             content=content,
-            image_paths=image_paths if image_paths else None
+            image_blocks=image_blocks
         )
 
         from datetime import datetime

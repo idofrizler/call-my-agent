@@ -57,9 +57,13 @@ class RunLoop:
                 agent = self.writer
             elif agent_name == "Editor":
                 agent = self.editor
+            elif agent_name == "Publisher":
+                agent = self.publisher
             else:
-                agent = self.illustrator
-            
+                # retry if the selector returns an invalid agent
+                print(f"\n❌ Invalid agent selected: {agent_name}. Retrying...\n")
+                continue
+
             print(f"\n🔁 [{agent_name}] is now responding...\n")
 
             # Get response
@@ -70,10 +74,6 @@ class RunLoop:
             print(f"[{agent_name}]: {output}")
             if self.logger:
                 self.logger.append(agent_name, output)
-
-            # Update illustration flag if the current response contains an image
-            if "![Generated illustration]" in output:
-                self.has_image = True
 
             # Handle any requested illustrations after editor response
             if agent_name == "Editor":
