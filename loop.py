@@ -53,6 +53,8 @@ class RunLoop:
         for turn in range(self.max_turns):
             # Decide who goes next
             agent_name = await self.selector.next(history)
+            if self.logger:
+                self.logger.append("Selector", f"Selected {agent_name}")
             if agent_name == "Writer":
                 agent = self.writer
             elif agent_name == "Editor":

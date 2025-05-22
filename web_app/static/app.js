@@ -46,6 +46,21 @@ async function loadConversation(sessionId) {
     
     const container = document.getElementById('messages');
     container.innerHTML = data.messages.map(msg => {
+        // Special handling for selector decisions
+        if (msg.role === 'Selector') {
+            return `
+                <div class="selector-decision">
+                    <div class="selector-line"></div>
+                    <div class="selector-content">
+                        <span class="selector-icon">🔄</span>
+                        Selector chose 
+                        <span class="selector-choice">${msg.content.replace('Selected ', '')}</span>
+                    </div>
+                    <div class="selector-line"></div>
+                </div>
+            `;
+        }
+
         const content = renderContent(msg.content);
         const needsCollapse = content.length > 500; // Collapse messages longer than 500 chars
         

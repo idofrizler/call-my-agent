@@ -232,3 +232,55 @@ body {
 .message-content code {
     font-family: 'Consolas', 'Monaco', monospace;
 }
+
+/* Selector decision styling */
+.selector-decision {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem 0;
+    gap: 1rem;
+}
+
+.selector-line {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ccc 20%, #ccc 80%, transparent);
+    flex: 1;
+}
+
+.selector-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.selector-icon {
+    font-size: 1.1rem;
+}
+
+.selector-choice {
+    font-weight: 600;
+    color: #2196F3;
+    margin-left: 0.25rem;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .selector-line {
+    background: linear-gradient(to right, transparent, #444 20%, #444 80%, transparent);
+}
+
+[data-theme="dark"] .selector-content {
+    background: #2d2d2d;
+    color: #aaa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .selector-choice {
+    color: #64B5F6;
+}
