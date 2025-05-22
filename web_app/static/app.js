@@ -50,7 +50,7 @@ async function loadConversation(sessionId) {
         const needsCollapse = content.length > 500; // Collapse messages longer than 500 chars
         
         return `
-            <div class="message ${msg.role.toLowerCase() === 'user' ? 'user' : 'agent'}">
+            <div class="message ${msg.role.toLowerCase() === 'user' ? 'user' : msg.role}">
                 <div class="message-header">
                     ${msg.role} • ${formatDate(msg.timestamp)}
                 </div>

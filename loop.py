@@ -89,6 +89,8 @@ class RunLoop:
                     if "![Generated illustration]" in output:
                         history += f"\n[Illustrator]: {output}"
                         print(f"[Illustrator]: {output}")
+                        if self.logger:
+                            self.logger.append("Illustrator", output)
                         self.editor.image_queue.pop(0)
                         self.has_image = True
                     else:
@@ -99,7 +101,11 @@ class RunLoop:
                 if self.editor.is_ready():
                     print("\n✅ Editor approved. Creating PDF...")
                     response = await self.publisher.respond(history)
-                    print(response)
+                    output = response.strip()
+                    history += f"\n[Publisher]: {output}"
+                    print(f"[Publisher]: {output}")
+                    if self.logger:
+                        self.logger.append("Publisher", output)
                     print("\n✅ Book is done!")
                     if self.logger:
                         self.logger.finalize()
