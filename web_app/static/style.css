@@ -285,6 +285,17 @@ body {
     display: block;
 }
 
+/* Message links */
+.message-content a {
+    color: inherit;
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.message-content a:hover {
+    opacity: 0.8;
+}
+
 /* Markdown formatting */
 .message-content pre {
     background: rgba(0, 0, 0, 0.1);

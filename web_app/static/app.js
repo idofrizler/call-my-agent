@@ -109,6 +109,15 @@ function renderContent(content) {
     content = content.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => 
         `<pre><code class="language-${lang}">${escapeHtml(code.trim())}</code></pre>`
     );
+
+    // Convert raw PDF paths to clickable links
+    content = content.replace(/(?:output\\|output\/)[^\\\/\s)]+\.pdf/g, (match) => {
+        // Replace backslashes with forward slashes
+        const cleanPath = match.replace(/\\/g, '/');
+        const href = cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath;
+        const filename = href.split('/').pop();
+        return `<a href="${href}" target="_blank" rel="noopener">${filename}</a>`;
+    });
     
     return content;
 }
