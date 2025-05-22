@@ -42,12 +42,9 @@ class EditorAgent(BaseAgent):
         
         for line in response.split('\n'):
 
-            # remote leading dashes, asterisk, and spaces
-            line = line.lstrip('-* ')
-
-            if line.strip().startswith('IMG:'):
+            if 'IMG:' in line.strip():
                 # Extract image prompt after IMG: prefix
-                prompt = line.strip()[4:].strip()
+                prompt = line.split('IMG:')[1].strip()
                 if prompt:
                     self.image_queue.append(prompt)
             elif "The book is ready" in line:

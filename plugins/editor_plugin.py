@@ -15,7 +15,7 @@ If ANY title is missing, mention it specifically and request it.
 If all titles exist and content is ready, say exactly: "The book is ready."
 
 2. ILLUSTRATION NEEDS
-List any scenes/moments that need illustrations, prefixed with "IMG:" (no leading characters, start with IMG:). For example:
+List 2-3 scenes/moments that need illustrations, prefixed with "IMG:" (no leading characters, start with IMG:). For example:
 IMG: A young boy playing with his dog in a sunny park
 IMG: The magical forest at night with glowing fireflies
 
